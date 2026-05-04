@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPerfectResume - Resume Builder</title>
+
+    <!-- Libraries -->
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light d-flex flex-column min-vh-100">
+
+    <!-- Tab-bar: Uses 'd-print-none' so it doesn't show up on the final PDF -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary mb-4 d-print-none" role="navigation">
+        <div class="container">
+            <!-- Brand is also a home button -->
+            <span class="navbar-brand" onclick="showSection('divHome')" style="cursor: pointer;" aria-label="Go to Home">
+                <i class="bi bi-person-badge text-info me-2" aria-hidden="true"></i>MyPerfectResume
+            </span>
+            <div class="navbar-nav">
+                <a class="nav-link" href="#" onclick="showSection('divJobs')">Experience</a>
+                <a class="nav-link" href="#" onclick="showSection('divExtras')">Skills & Awards</a>
+                <a class="nav-link" href="#" onclick="showSection('divBuild')">View Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container pb-5">
+        
+        <!-- Startup Screen -->
+        <section id="divHome" class="col-12 section-page">
+            <div class="card bg-secondary text-white border-0">
+                <div class="card-body text-center p-5">
+                    <i class="bi bi-file-earmark-person fs-1 mb-3 text-info" aria-hidden="true"></i>
+                    <h1 class="display-4">MyPerfectResume</h1>
+                    <p class="lead">Transform your work history into a professional resume with AI.</p>
+                    <hr class="bg-light">
+                    <button class="btn btn-info btn-lg mt-3 px-5" onclick="showSection('divJobs')">Get Started</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience/Job Knowledge -->
+        <section id="divJobs" class="col-12 section-page d-none">
+            <div class="card bg-light text-dark border-0">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="mb-0"><i class="bi bi-briefcase me-2" aria-hidden="true"></i>Experience</h2>
+                        <button class="btn btn-primary" onclick="openJobModal()" aria-label="Add a new job experience">+ Add Job</button>
+                    </div>
+                    <hr>
+                    <div id="divJobList"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills & Awards -->
+        <section id="divExtras" class="col-12 section-page d-none">
+            <div class="card bg-light text-dark border-0">
+                <div class="card-body">
+                    <h2 class="mb-4"><i class="bi bi-star me-2" aria-hidden="true"></i>Skills & Awards</h2>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label for="selType" class="form-label">Category</label>
+                            <select id="selType" class="form-select">
+                                <option value="Skill">Skill</option>
+                                <option value="Award">Award</option>
+                                <option value="Certification">Certification</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txtExtraContent" class="form-label">Description</label>
+                            <input type="text" id="txtExtraContent" class="form-control" placeholder="e.g. JavaScript, Dean's List">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button class="btn btn-primary w-100" onclick="saveExtra()" aria-label="Add skill or award">Add</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="divExtraList" class="row"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resume Preview & Print -->
+        <section id="divBuild" class="col-12 section-page d-none d-print-block">
+            <div class="card bg-white text-dark mb-4 d-print-none border-0">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0"><i class="bi bi-eye me-2" aria-hidden="true"></i>Preview</h2>
+                    <!-- AI taught me window.print(), don't know if this counts but I'd rather be safe than sorry -->
+                    <button class="btn btn-success px-4" onclick="window.print()" aria-label="Print or save as PDF">
+                        <i class="bi bi-printer me-2" aria-hidden="true"></i>Print PDF
+                    </button>
+                </div>
+            </div>
+
+            <div id="divResumePaper" class="bg-white p-5 mx-auto border text-dark" style="max-width: 850px; min-height: 1050px;">
+                <h1 class="display-3 text-center border-bottom border-dark pb-3 mb-5 text-uppercase">RESUME</h1>
+                <div id="divResumeContent"></div>
+            </div>
+        </section>
+
+        <!-- Attribution -->
+        <div class="modal fade text-dark" id="modalAttribution" tabindex="-1" aria-labelledby="modalAttributionLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAttributionLabel">Library Attribution</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This application is built using the following open-source libraries:</p>
+                        <!-- I used AI here to make a better format for what I was trying to do
+                         I didn't know how I wanted to format it, but the AI came up with the idea
+                         of an unformated list and taught me how to implement it -->
+                        <ul>
+                            <li><strong>Bootstrap 5:</strong> Responsive UI styling.</li>
+                            <li><strong>Bootstrap Icons:</strong> Visual iconography.</li>
+                            <li><strong>jQuery:</strong> DOM manipulation and AJAX.</li>
+                            <li><strong>SweetAlert2:</strong> Enhanced user notifications.</li>
+                            <li><strong>Google Gemini AI:</strong> Content review and suggestions.</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Pop-up form for creating Job experience -->
+    <div class="modal fade text-dark" id="modalJob" tabindex="-1" role="dialog" aria-labelledby="modalJobLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="modalJobLabel">Add Experience</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="txtCompany" class="form-label">Company Name</label>
+                            <input type="text" id="txtCompany" class="form-control" placeholder="e.g. Google">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txtRole" class="form-label">Job Title</label>
+                            <input type="text" id="txtRole" class="form-control" placeholder="e.g. Software Engineer">
+                        </div>
+                        <div class="col-12">
+                            <label for="txtDescription" class="form-label">Responsibilities</label>
+                            <textarea id="txtDescription" class="form-control" rows="5" placeholder="Key achievements..."></textarea>
+                            <button class="btn btn-outline-primary btn-sm mt-2" onclick="getAISuggestion()" aria-label="Use Gemini AI to polish your text">
+                                <i class="bi bi-robot me-1" aria-hidden="true"></i> Improve with Gemini AI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-link text-secondary text-decoration-none" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary px-4" onclick="saveJob()">Save Experience</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer to give credit -->
+    <footer class="text-center mt-auto py-4 border-top border-secondary bg-black d-print-none">
+        <p class="text-light mb-0 small">MyPerfectResume &copy; 2026 | Powered by Gemini 3 Flash</p>
+        <button class="btn btn-sm btn-link text-info text-decoration-none p-0 mt-1" onclick="showAttribution()">Credits & Attribution</button>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap.bundle.min.js"></script>
+    <script src="lib/sweetalert2.all.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
